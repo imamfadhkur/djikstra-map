@@ -224,6 +224,11 @@
           <a href="#page_2_alamat" class="btn btn-primary my-2">2 alamat</a>
           <a href="#multi_alamat" class="btn btn-primary my-2">multi alamat</a>
         </p>
+        <p>
+          hasil penelitian <br>
+          <a href="{{ url('get-lat-long') }}" class="btn btn-primary my-2">get langitude longitude</a>
+          <a href="{{ url('shortest-path-dijkstra') }}" class="btn btn-primary my-2">shortest path dijkstra</a>
+        </p>
       </div>
     </div>
   </section>

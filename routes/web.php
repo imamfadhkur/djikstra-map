@@ -32,3 +32,10 @@ Route::get('/lat_n_long', [Controller::class, 'lat_n_long']);
 Route::get('/one_address', [Controller::class, 'one_address']);
 Route::get('/two_address', [Controller::class, 'two_address']);
 Route::get('/multi_address', [Controller::class, 'multi_address']);
+
+Route::get('/get-lat-long', [Controller::class, 'get_lat_long_view']);
+Route::post('/get-lat-long', [Controller::class, 'get_lat_long_data']);
+Route::get('/shortest-path-dijkstra', [Controller::class, 'shortest_path_dijkstra']);
+
+Route::get('/normal', [Controller::class, 'normalize']);
+Route::get('/get-test', [Controller::class, 'get_test']);
