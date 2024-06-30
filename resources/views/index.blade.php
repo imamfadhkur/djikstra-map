@@ -1,13 +1,11 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="../assets/js/color-modes.js"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.122.0">
-    <title>Album example · Bootstrap v5.3</title>
+    <title>Traveling Salesman Problem - Dijkstra</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/album/">
 
@@ -15,7 +13,10 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
-<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
 
     <style>
       .bd-placeholder-img {
@@ -94,6 +95,22 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+
+      #map {
+            height: 250px;
+        }
+
+      #map_1_address {
+            height: 250px;
+        }
+      
+        #map_2_address {
+            height: 250px;
+        }
+      
+        #multi_address {
+            height: 250px;
+        }
     </style>
 
     
@@ -189,14 +206,23 @@
 
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Maps example</h1>
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <h1 class="fw-light">Traveling Salesman Problem - Dijkstra</h1>
+        <h4 class="fw-light">Open Street Maps</h4>
         <p class="lead text-body-secondary">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
         <p>
+          contoh <br>
           <a href="{{ url('map-1-point') }}" target="_blank" class="btn btn-primary my-2">map 1 poin</a>
           <a href="{{ url('map-2-point') }}" target="_blank" class="btn btn-primary my-2">map 2 poin</a>
           <a href="{{ url('map-3-point') }}" target="_blank" class="btn btn-primary my-2">map 3 poin</a>
-          <a href="{{ url('multi-track') }}" target="_blank" class="btn btn-primary my-2">multiple track</a>
+          <a href="{{ url('multi-track') }}" target="_blank" class="btn btn-primary my-2">multi poin</a>
+        </p>
+        <p>
+          coba sendiri :) <br>
+          <a href="#page_lat_n_long" class="btn btn-primary my-2">lat. & long.</a>
+          <a href="#page_1_alamat" class="btn btn-primary my-2">1 alamat</a>
+          <a href="#page_2_alamat" class="btn btn-primary my-2">2 alamat</a>
+          <a href="#multi_alamat" class="btn btn-primary my-2">multi alamat</a>
         </p>
       </div>
     </div>
@@ -204,145 +230,236 @@
 
   <div class="album py-5 bg-body-tertiary">
     <div class="container">
+      <div class="row">
+        <div id="page_lat_n_long" class="col">
+          <div class="card shadow-sm">
+            {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
+            <div class="bd-placeholder-img card-img-top" width="100%" id="map"></div>
+            <div class="card-body">
+              <h4>input latitude dan longitude</h4>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
+              <form action="{{ url('lat_n_long') }}" method="get">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-1">
+                      <label for="latitude">Latitude <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude">
+                    </div>
+                    <div class="form-group mb-1">
+                      <label for="longitude">Longitude <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude">
+                    </div>
+                    <i><span class="text-danger">(*)</span> : wajib diisi.</i> <br>
+                    <button type="submit" class="btn btn-primary px-5 mt-2">cek</button>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="page_1_alamat" class="col mt-5">
+          <div class="card shadow-sm">
+            {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
+            <div class="bd-placeholder-img card-img-top" width="100%" id="map_1_address"></div>
+            <div class="card-body">
+              <h4>Input 1 Alamat</h4>
+              {{-- nama jalan, kelurahan, kecamatan, kab/kota, negara --}}
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
+              <form action="{{ url('one_address') }}" method="get">
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="nama_jalan">nama jalan</label>
+                      <input type="text" class="form-control" id="nama_jalan" name="nama_jalan" placeholder="nama jalan">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="kelurahan">kelurahan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kelurahan" name="kelurahan" placeholder="kelurahan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kecamatan">kecamatan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kecamatan" name="kecamatan" placeholder="kecamatan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kab_kota">kabupaten/kota <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kab_kota" name="kab_kota" placeholder="kabupaten atau kota" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="negara">negara <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="negara" name="negara" placeholder="negara" required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <i><span class="text-danger">(*)</span> : wajib diisi. </i><br>
+                      <button type="submit" class="btn btn-primary px-5 mt-2">cek</button>
+                    </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="page_2_alamat" class="col mt-5">
+          <div class="card shadow-sm">
+            {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
+            <div class="bd-placeholder-img card-img-top" width="100%" id="map_2_address"></div>
+            <div class="card-body">
+              <h4>Input 2 Alamat</h4>
+              {{-- nama jalan, kelurahan, kecamatan, kab/kota, negara --}}
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
+              <form action="{{ url('two_address') }}" method="get">
+                <div class="row">
+                  <div class="col">
+                   <b>alamat 1</b>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="nama_jalan_1">nama jalan</label>
+                      <input type="text" class="form-control" id="nama_jalan_1" name="nama_jalan_1" placeholder="nama jalan">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="kelurahan_1">kelurahan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kelurahan_1" name="kelurahan_1" placeholder="kelurahan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kecamatan_1">kecamatan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kecamatan_1" name="kecamatan_1" placeholder="kecamatan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kab_kota_1">kabupaten/kota <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kab_kota_1" name="kab_kota_1" placeholder="kabupaten atau kota" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="negara_1">negara <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="negara_1" name="negara_1" placeholder="negara" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                   <b>alamat 2</b>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="nama_jalan_2">nama jalan</label>
+                      <input type="text" class="form-control" id="nama_jalan_2" name="nama_jalan_2" placeholder="nama jalan">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group mb-1">
+                      <label for="kelurahan_2">kelurahan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kelurahan_2" name="kelurahan_2" placeholder="kelurahan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kecamatan_2">kecamatan <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kecamatan_2" name="kecamatan_2" placeholder="kecamatan" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="kab_kota_2">kabupaten/kota <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="kab_kota_2" name="kab_kota_2" placeholder="kabupaten atau kota" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group mb-1">
+                      <label for="negara_2">negara <span class="text-danger">(*)</span></label>
+                      <input type="text" class="form-control" id="negara_2" name="negara_2" placeholder="negara" required>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <i><span class="text-danger">(*)</span> : wajib diisi. </i><br>
+                    <button type="submit" class="btn btn-primary px-5 mt-2">cek</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div id="multi_alamat" class="col mt-5">
+          <div class="card shadow-sm">
+            <div class="bd-placeholder-img card-img-top" width="100%" id="multi_address"></div>
+            <div class="card-body">
+              <h4>Input Multi Alamat</h4>
+              <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
+              <form action="{{ url('multi_address') }}" method="get" id="addressForm">
+                <div id="addressFields">
+                  <div class="address-group">
+                    <div class="row">
+                      <div class="col">
+                       <b>Alamat 1</b>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group mb-1">
+                          <label for="nama_jalan_1">Nama Jalan</label>
+                          <input type="text" class="form-control" name="nama_jalan[]" placeholder="Nama Jalan">
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group mb-1">
+                          <label for="kelurahan_1">Kelurahan <span class="text-danger">(*)</span></label>
+                          <input type="text" class="form-control" name="kelurahan[]" placeholder="Kelurahan" required>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group mb-1">
+                          <label for="kecamatan_1">Kecamatan <span class="text-danger">(*)</span></label>
+                          <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" required>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group mb-1">
+                          <label for="kab_kota_1">Kabupaten/Kota <span class="text-danger">(*)</span></label>
+                          <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" required>
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <div class="form-group mb-1">
+                          <label for="negara_1">Negara <span class="text-danger">(*)</span></label>
+                          <input type="text" class="form-control" name="negara[]" placeholder="Negara" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <i><span class="text-danger">(*)</span> : wajib diisi. </i><br>
+                    <button type="button" class="btn btn-secondary px-5 mt-2" onclick="addAddress()">Tambah Alamat</button>
+                    <button type="submit" class="btn btn-primary px-5 mt-2">Cek</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
   </div>
@@ -354,11 +471,82 @@
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
     </p>
-    <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="../getting-started/introduction/">getting started guide</a>.</p>
+    <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+    <p class="mb-0">Lorem, ipsum. <a href="/">Visit the homepage</a> Lorem ipsum dolor sit amet consectetur.</p>
   </div>
 </footer>
-<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-
+      <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+      <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+      <script>
+        // Fungsi untuk menambahkan input alamat baru
+        function addAddress() {
+          var addressFields = document.getElementById('addressFields');
+          var newAddressGroup = document.createElement('div');
+          newAddressGroup.className = 'address-group';
+          var addressIndex = addressFields.getElementsByClassName('address-group').length + 1;
+          newAddressGroup.innerHTML = `
+            <div class="row">
+              <div class="col">
+              <b>Alamat ${addressIndex}</b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-3">
+                <div class="form-group mb-1">
+                  <label for="nama_jalan_${addressIndex}">Nama Jalan</label>
+                  <input type="text" class="form-control" name="nama_jalan[]" placeholder="Nama Jalan">
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group mb-1">
+                  <label for="kelurahan_${addressIndex}">Kelurahan <span class="text-danger">(*)</span></label>
+                  <input type="text" class="form-control" name="kelurahan[]" placeholder="Kelurahan" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group mb-1">
+                  <label for="kecamatan_${addressIndex}">Kecamatan <span class="text-danger">(*)</span></label>
+                  <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group mb-1">
+                  <label for="kab_kota_${addressIndex}">Kabupaten/Kota <span class="text-danger">(*)</span></label>
+                  <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" required>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="form-group mb-1">
+                  <label for="negara_${addressIndex}">Negara <span class="text-danger">(*)</span></label>
+                  <input type="text" class="form-control" name="negara[]" placeholder="Negara" required>
+                </div>
+              </div>
+            </div>`;
+          addressFields.appendChild(newAddressGroup);
+        }
+        
+          // Fungsi untuk membuat peta dan menambahkan tile layer
+          function createMap(containerId, centerCoords) {
+              var map = L.map(containerId).setView(centerCoords, 7);
+              
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
+      
+              return map;
+          }
+      
+          // Pusat peta di Kecamatan Rungkut, Surabaya
+          var centerCoords = [-7.030915, 112.752922];
+      
+          // Buat peta pertama
+          var map = createMap('map', centerCoords);
+      
+          // Buat peta kedua dengan ID yang berbeda
+          var map_1_address = createMap('map_1_address', centerCoords);
+          var map_2_address = createMap('map_2_address', centerCoords);
+          var multi_address = createMap('multi_address', centerCoords);
+      </script>    
     </body>
 </html>
