@@ -226,8 +226,9 @@
         </p>
         <p>
           hasil penelitian <br>
-          <a href="{{ url('get-lat-long') }}" class="btn btn-primary my-2">get langitude longitude</a>
-          <a href="{{ url('shortest-path-dijkstra') }}" class="btn btn-primary my-2">shortest path dijkstra</a>
+          {{-- <a href="{{ url('get-lat-long') }}" class="btn btn-primary my-2">get langitude longitude</a> --}}
+          <a href="{{ url('non-dijkstra') }}" class="btn btn-primary my-2">non dijkstra</a>
+          <a href="{{ url('dijkstra') }}" class="btn btn-primary my-2">dijkstra</a>
         </p>
       </div>
     </div>
@@ -236,7 +237,7 @@
   <div class="album py-5 bg-body-tertiary">
     <div class="container">
       <div class="row">
-        <div id="page_lat_n_long" class="col">
+        <div id="page_lat_n_long" class="col pt-4">
           <div class="card shadow-sm">
             {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
             <div class="bd-placeholder-img card-img-top" width="100%" id="map"></div>
@@ -261,7 +262,7 @@
             </div>
           </div>
         </div>
-        <div id="page_1_alamat" class="col mt-5">
+        <div id="page_1_alamat" class="col mt-5 pt-4">
           <div class="card shadow-sm">
             {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
             <div class="bd-placeholder-img card-img-top" width="100%" id="map_1_address"></div>
@@ -311,7 +312,7 @@
             </div>
           </div>
         </div>
-        <div id="page_2_alamat" class="col mt-5">
+        <div id="page_2_alamat" class="col mt-5 pt-4">
           <div class="card shadow-sm">
             {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
             <div class="bd-placeholder-img card-img-top" width="100%" id="map_2_address"></div>
@@ -404,7 +405,7 @@
             </div>
           </div>
         </div>
-        <div id="multi_alamat" class="col mt-5">
+        <div id="multi_alamat" class="col mt-5 pt-4">
           <div class="card shadow-sm">
             <div class="bd-placeholder-img card-img-top" width="100%" id="multi_address"></div>
             <div class="card-body">
@@ -434,19 +435,19 @@
                       <div class="col-md-2">
                         <div class="form-group mb-1">
                           <label for="kecamatan_1">Kecamatan <span class="text-danger">(*)</span></label>
-                          <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" required>
+                          <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" value="rungkut" required>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group mb-1">
                           <label for="kab_kota_1">Kabupaten/Kota <span class="text-danger">(*)</span></label>
-                          <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" required>
+                          <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" value="surabaya" required>
                         </div>
                       </div>
                       <div class="col-md-2">
                         <div class="form-group mb-1">
                           <label for="negara_1">Negara <span class="text-danger">(*)</span></label>
-                          <input type="text" class="form-control" name="negara[]" placeholder="Negara" required>
+                          <input type="text" class="form-control" name="negara[]" placeholder="Negara" value="indonesia" required>
                         </div>
                       </div>
                     </div>
@@ -512,19 +513,19 @@
               <div class="col-md-2">
                 <div class="form-group mb-1">
                   <label for="kecamatan_${addressIndex}">Kecamatan <span class="text-danger">(*)</span></label>
-                  <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" required>
+                  <input type="text" class="form-control" name="kecamatan[]" placeholder="Kecamatan" value="rungkut" required>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group mb-1">
                   <label for="kab_kota_${addressIndex}">Kabupaten/Kota <span class="text-danger">(*)</span></label>
-                  <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" required>
+                  <input type="text" class="form-control" name="kab_kota[]" placeholder="Kabupaten atau Kota" value="surabaya" required>
                 </div>
               </div>
               <div class="col-md-2">
                 <div class="form-group mb-1">
                   <label for="negara_${addressIndex}">Negara <span class="text-danger">(*)</span></label>
-                  <input type="text" class="form-control" name="negara[]" placeholder="Negara" required>
+                  <input type="text" class="form-control" name="negara[]" placeholder="Negara" value="indonesia" required>
                 </div>
               </div>
             </div>`;

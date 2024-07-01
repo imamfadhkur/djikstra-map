@@ -139,7 +139,7 @@ class Controller extends BaseController
                 $longitude = $matches[2];
             }
 
-            if ($existingData->latitude == 0.00000000 && $latitude !== 0.00000000) {
+            if ((isset($existingData->latitude) && $existingData->latitude == 0.00000000) && $latitude !== 0) {
                 $existingData->update([
                     'latitude' => $latitude,
                     'longitude' => $longitude,
@@ -710,5 +710,4 @@ class Controller extends BaseController
             echo $this->normalizeAddress($address) . "dxdx";
         }
     }
-    
 }

@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "graphp/algorithms": "^0.8.2",
+        "graphp/graph": "^0.9.3",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9"
     },
