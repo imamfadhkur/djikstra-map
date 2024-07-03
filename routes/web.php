@@ -1,10 +1,11 @@
 <?php
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\NonDijkstraController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DijkstraController;
 use App\Http\Controllers\DijkstraV2Controller;
+use App\Http\Controllers\DijkstraV3Controller;
+use App\Http\Controllers\NonDijkstraController;
 
 Route::get('/', function () {
     // return view('welcome');
@@ -40,7 +41,7 @@ Route::get('/get-lat-long', [Controller::class, 'get_lat_long_view']);
 Route::post('/get-lat-long', [Controller::class, 'get_lat_long_data']);
 
 Route::get('/non-dijkstra', [NonDijkstraController::class, 'nonDijkstra']);
-Route::get('/dijkstra', [DijkstraV2Controller::class, 'ShortestPath']);
+Route::get('/dijkstra', [DijkstraV3Controller::class, 'ShortestPath']);
 
 Route::get('/normal', [Controller::class, 'normalize']);
 Route::get('/get-test', [Controller::class, 'get_test']);

@@ -2,26 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Dataset;
 use Fhaculty\Graph\Graph;
+use Illuminate\Http\Request;
 use Graphp\Algorithms\ShortestPath\Dijkstra;
 
 class DijkstraController extends Controller
 {
-    public function findShortestPath(Request $request)
+    public function ShortestPath(Request $request)
     {
-        // Validasi request untuk memastikan format data koordinat yang benar
-        // $request->validate([
-        //     'coordinates' => 'required|array',
-        //     'coordinates.*.lat' => 'required|numeric',
-        //     'coordinates.*.lng' => 'required|numeric',
-        // ]);
+        // Meningkatkan batas memori PHP
+        ini_set('memory_limit', '4048M'); // Sesuaikan dengan kebutuhan Anda
+        ini_set('max_execution_time', 480);
 
-        // Koordinat input dari request
-        // $coordinates = $request->input('coordinates');
-
-        ini_set('max_execution_time', 360);
-
+        // Koordinat input dari request atau contoh data koordinat
         $coordinates = [
             ['lat' => -7.32076430, 'lng' => 112.79239950],
             ['lat' => -7.32076430, 'lng' => 112.79239950],
@@ -30,17 +24,25 @@ class DijkstraController extends Controller
             ['lat' => -7.32105860, 'lng' => 112.79408210],
             ['lat' => -7.32213560, 'lng' => 112.79318970],
             ['lat' => -7.32213560, 'lng' => 112.79318970],
-            // ['lat' => -7.32246870, 'lng' => 112.79272920],
-            // ['lat' => -7.32430030, 'lng' => 112.79367670],
-            // ['lat' => -7.32433620, 'lng' => 112.79384870],
         ];
 
+        $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit(11)->get();
+            $coordinates = [];
+            foreach ($data as $key => $value) {
+                $coordinates[] = [
+                    'lat' => $value->latitude,
+                    'lng' => $value->longitude,
+                ];
+            }
+
+        // Membuat graph dan node
         $graph = new Graph();
         $nodes = [];
         foreach ($coordinates as $index => $coordinate) {
             $nodes[$index] = $graph->createVertex($index);
         }
 
+        // Menghitung jarak antar node dan menambah edge ke graph
         for ($i = 0; $i < count($coordinates); $i++) {
             for ($j = $i + 1; $j < count($coordinates); $j++) {
                 $distance = $this->calculateDistance($coordinates[$i], $coordinates[$j]);
@@ -49,18 +51,16 @@ class DijkstraController extends Controller
             }
         }
 
-        // Solve TSP
+        // Menyelesaikan TSP untuk menemukan rute terpendek
         $shortestRoute = $this->solveTSP($nodes);
 
-        // Convert route to coordinates
+        // Mengonversi rute ke koordinat
         $routeCoordinates = array_map(function($node) use ($coordinates) {
             return $coordinates[$node->getId()];
         }, $shortestRoute);
 
-        // dd($routeCoordinates);
-
         // Kirim hasil ke view
-        return view('riset.path', ['coordinates' => $routeCoordinates]);
+        return view('riset.dijkstra', ['coordinates' => $routeCoordinates]);
     }
 
     private function calculateDistance($coord1, $coord2)
@@ -70,7 +70,7 @@ class DijkstraController extends Controller
         $lat2 = $coord2['lat'];
         $lng2 = $coord2['lng'];
 
-        $earthRadius = 6371000; // Meter
+        $earthRadius = 6371000; // Radius bumi dalam meter
         $dLat = deg2rad($lat2 - $lat1);
         $dLng = deg2rad($lng2 - $lng1);
         $a = sin($dLat / 2) * sin($dLat / 2) +

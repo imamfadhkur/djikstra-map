@@ -56,56 +56,57 @@ class NonDijkstraController extends Controller
 
         // buatkan array koordinat dari tabel datasets
         $hasil = [];
-        $limit = 1;
-        while ($limit <= 201) {
-            $limit += 10;
-            $totalDistance = 0;
-            $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
-            $jumlah_node = count($data);
-            $coordinates = [];
-            foreach ($data as $key => $value) {
-                $coordinates[] = [
-                    'lat' => $value->latitude,
-                    'lng' => $value->longitude,
-                ];
-            }
-            // dd($coordinates);
-            
-            $numNodes = count($coordinates);
+        $limit = 101;
+        $totalDistance = 0;
+        $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
+        $jumlah_node = count($data);
+        $coordinates = [];
+        foreach ($data as $key => $value) {
+            $coordinates[] = [
+                'lat' => $value->latitude,
+                'lng' => $value->longitude,
+            ];
+        }
+        // dd($coordinates);
+        // $coordinates[1] = [
+        //     'lat' => "-7.33050460",
+        //     'lng' => "112.75174540",
+        // ];
+        
+        $numNodes = count($coordinates);
 
-            // Hitung jarak total dengan mengunjungi setiap titik dalam urutan yang diberikan
-            for ($i = 0; $i < $numNodes - 1; $i++) {
-                $distance = $this->haversine(
-                    $coordinates[$i]['lat'], $coordinates[$i]['lng'],
-                    $coordinates[$i + 1]['lat'], $coordinates[$i + 1]['lng']
-                );
-                $totalDistance += $distance;
-                // Tambahkan totalDistance ke array saat ini sebagai 'totalDistance'
-                $coordinates[$i]['totalDistance'] = $totalDistance;
-            }
-
-            // Tambahkan jarak dari titik terakhir ke titik pertama untuk membentuk siklus
+        // Hitung jarak total dengan mengunjungi setiap titik dalam urutan yang diberikan
+        for ($i = 0; $i < $numNodes - 1; $i++) {
             $distance = $this->haversine(
-                $coordinates[$numNodes - 1]['lat'], $coordinates[$numNodes - 1]['lng'],
-                $coordinates[0]['lat'], $coordinates[0]['lng']
+                $coordinates[$i]['lat'], $coordinates[$i]['lng'],
+                $coordinates[$i + 1]['lat'], $coordinates[$i + 1]['lng']
             );
             $totalDistance += $distance;
-            // Pastikan untuk menambahkan totalDistance ke elemen terakhir juga
-            $coordinates[$numNodes - 1]['totalDistance'] = $totalDistance;
-
-            $output = [
-                'coordinates' => $coordinates,
-                'totalDistance' => $totalDistance,
-                'totalNode' => $jumlah_node,
-            ];
-            $hasil[] = $output;
+            // dd($coordinates[0],$coordinates[1], $totalDistance);
+            // Tambahkan totalDistance ke array saat ini sebagai 'totalDistance'
+            $coordinates[$i]['totalDistance'] = $totalDistance;
         }
 
-        // dd($hasil);
+        // Tambahkan jarak dari titik terakhir ke titik pertama untuk membentuk siklus
+        $distance = $this->haversine(
+            $coordinates[$numNodes - 1]['lat'], $coordinates[$numNodes - 1]['lng'],
+            $coordinates[0]['lat'], $coordinates[0]['lng']
+        );
+        $totalDistance += $distance;
+        // Pastikan untuk menambahkan totalDistance ke elemen terakhir juga
+        $coordinates[$numNodes - 1]['totalDistance'] = $totalDistance;
+
+        $output = [
+            'coordinates' => $coordinates,
+            'totalDistance' => $totalDistance,
+            'totalNode' => $jumlah_node,
+        ];
+        $hasil[] = $output;
+
+        // dd($hasil, $totalDistance);
         return view('riset.path', [
             'coordinates' => $coordinates,
             'totalDistance' => $totalDistance,
         ]);
     }
-
 }

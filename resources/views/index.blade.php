@@ -210,19 +210,19 @@
         <h1 class="fw-light">Traveling Salesman Problem - Dijkstra</h1>
         <h4 class="fw-light">Open Street Maps</h4>
         <p class="lead text-body-secondary">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
-        <p>
+        {{-- <p>
           contoh <br>
-          <a href="{{ url('map-1-point') }}" target="_blank" class="btn btn-primary my-2">map 1 poin</a>
-          <a href="{{ url('map-2-point') }}" target="_blank" class="btn btn-primary my-2">map 2 poin</a>
-          <a href="{{ url('map-3-point') }}" target="_blank" class="btn btn-primary my-2">map 3 poin</a>
-          <a href="{{ url('multi-track') }}" target="_blank" class="btn btn-primary my-2">multi poin</a>
-        </p>
+          <a href="{{ url('map-1-point') }}" target="_blank" class="btn btn-primary my-2">map 1 node</a>
+          <a href="{{ url('map-2-point') }}" target="_blank" class="btn btn-primary my-2">map 2 node</a>
+          <a href="{{ url('map-3-point') }}" target="_blank" class="btn btn-primary my-2">map 3 node</a>
+          <a href="{{ url('multi-track') }}" target="_blank" class="btn btn-primary my-2">multi node</a>
+        </p> --}}
         <p>
           coba sendiri :) <br>
           <a href="#page_lat_n_long" class="btn btn-primary my-2">lat. & long.</a>
-          <a href="#page_1_alamat" class="btn btn-primary my-2">1 alamat</a>
-          <a href="#page_2_alamat" class="btn btn-primary my-2">2 alamat</a>
-          <a href="#multi_alamat" class="btn btn-primary my-2">multi alamat</a>
+          <a href="#page_1_alamat" class="btn btn-primary my-2">1 node</a>
+          <a href="#page_2_alamat" class="btn btn-primary my-2">2 node</a>
+          <a href="#multi_alamat" class="btn btn-primary my-2">multi node</a>
         </p>
         <p>
           hasil penelitian <br>
@@ -267,7 +267,7 @@
             {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
             <div class="bd-placeholder-img card-img-top" width="100%" id="map_1_address"></div>
             <div class="card-body">
-              <h4>Input 1 Alamat</h4>
+              <h4>Input 1 node</h4>
               {{-- nama jalan, kelurahan, kecamatan, kab/kota, negara --}}
               <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
               <form action="{{ url('one_address') }}" method="get">
@@ -317,7 +317,7 @@
             {{-- <svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg> --}}
             <div class="bd-placeholder-img card-img-top" width="100%" id="map_2_address"></div>
             <div class="card-body">
-              <h4>Input 2 Alamat</h4>
+              <h4>Input 2 node</h4>
               {{-- nama jalan, kelurahan, kecamatan, kab/kota, negara --}}
               <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
               <form action="{{ url('two_address') }}" method="get">
@@ -409,7 +409,7 @@
           <div class="card shadow-sm">
             <div class="bd-placeholder-img card-img-top" width="100%" id="multi_address"></div>
             <div class="card-body">
-              <h4>Input Multi Alamat</h4>
+              <h4>Input Multi node</h4>
               <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus dicta magnam tempore velit nam quasi id neque tenetur quidem ab.</p>
               <form action="{{ url('multi_address') }}" method="get" id="addressForm">
                 <div id="addressFields">
@@ -456,7 +456,7 @@
                 <div class="row">
                   <div class="col">
                     <i><span class="text-danger">(*)</span> : wajib diisi. </i><br>
-                    <button type="button" class="btn btn-secondary px-5 mt-2" onclick="addAddress()">Tambah Alamat</button>
+                    <button type="button" class="btn btn-secondary px-5 mt-2" onclick="addAddress()">Tambah node</button>
                     <button type="submit" class="btn btn-primary px-5 mt-2">Cek</button>
                   </div>
                 </div>
@@ -475,7 +475,8 @@
 <footer class="text-body-secondary py-5">
   <div class="container">
     <p class="float-end mb-1">
-      <a href="#">Back to top</a>
+      <a href="#">Back to top</a> <br>
+      <a href="{{ url('login') }}">Login</a>
     </p>
     <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing.</p>
     <p class="mb-0">Lorem, ipsum. <a href="/">Visit the homepage</a> Lorem ipsum dolor sit amet consectetur.</p>
@@ -485,7 +486,7 @@
       <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
       <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
       <script>
-        // Fungsi untuk menambahkan input alamat baru
+        // Fungsi untuk menambahkan input node baru
         function addAddress() {
           var addressFields = document.getElementById('addressFields');
           var newAddressGroup = document.createElement('div');
