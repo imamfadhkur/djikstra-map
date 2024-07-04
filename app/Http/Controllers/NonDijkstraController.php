@@ -103,7 +103,7 @@ class NonDijkstraController extends Controller
         ];
         $hasil[] = $output;
 
-        // dd($hasil, $totalDistance);
+        dd($hasil, $totalDistance);
         return view('riset.path', [
             'coordinates' => $coordinates,
             'totalDistance' => $totalDistance,

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('datasets', function (Blueprint $table) {
+        Schema::create('edges', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kurir_id');
-            $table->foreign('kurir_id')->references('id')->on('users');
-            $table->string('alamat_penerima');
-            $table->decimal('latitude',11,8);
-            $table->decimal('longitude',11,8);
+            $table->foreignId('id_node_a');
+            $table->foreign('id_node_a')->references('id')->on('datasets');
+            $table->foreignId('id_node_b');
+            $table->foreign('id_node_b')->references('id')->on('datasets');
+            $table->double('distance');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('datasets');
+        Schema::dropIfExists('edges');
     }
 };

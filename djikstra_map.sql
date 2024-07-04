@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2024 at 02:27 AM
+-- Generation Time: Jul 04, 2024 at 04:29 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -66,7 +66,7 @@ CREATE TABLE `datasets` (
 --
 
 INSERT INTO `datasets` (`id`, `delivery`, `alamat_penerima`, `latitude`, `longitude`, `created_at`, `updated_at`) VALUES
-(0, 'JNT', 'JNT', -7.31211370, 112.70387780, '2024-06-30 23:27:21', '2024-06-30 23:27:21'),
+(0, 'JNT', 'JNT', -7.31211370, 112.70387780, NULL, NULL),
 (1, 'Fikri K075143', 'Jalan Medokan Asri Utara XIV Blok Q 10, Rungkut, Surabaya, Jawa Timur', -7.32076430, 112.79239950, '2024-06-30 23:27:21', '2024-06-30 23:27:21'),
 (2, 'Fikri K075143', 'Jalan Medokan Asri Utara XIV Blok Q No. 29, Rungkut, Surabaya, Jawa Timur', -7.32076430, 112.79239950, '2024-06-30 23:27:23', '2024-06-30 23:27:23'),
 (3, 'Fikri K075143', 'Jalan Medokan Asri Utara 13 No. Q61, Rungkut, Surabaya, Jawa Timur', -7.32447190, 112.79396570, '2024-06-30 23:27:24', '2024-06-30 23:27:24'),
@@ -1175,7 +1175,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('W0MYQI6fLKzuIQE4LQRegswxSiXAbwQdX777ikWS', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiSXZ0ancyTlBDZllkdHVJUDZONDNCTkR3MTNSUHMyUFFHbE1rZXhwcyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9ub24tZGlqa3N0cmEiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19', 1719846174);
+('8uit9m1y6I3YUd5mbzXY5pwODEEAwP3OtBVtHtU1', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36', 'YTozOntzOjY6Il90b2tlbiI7czo0MDoiNEpiOHNkSE5GMVFpSmVxd21BWnFicEpiWk10MkdHUHh3QlJYQUF5UyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6NzY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sYXRfbl9sb25nP2xhdGl0dWRlPS03LjMzMDUwNDYwJmxvbmdpdHVkZT0xMTIuNzUxNzQ1NDAiO319', 1720020391);
 
 -- --------------------------------------------------------
 
@@ -1271,7 +1271,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `datasets`
 --
 ALTER TABLE `datasets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1000;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1001;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`

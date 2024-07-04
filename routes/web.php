@@ -45,3 +45,4 @@ Route::get('/dijkstra', [DijkstraV3Controller::class, 'ShortestPath']);
 
 Route::get('/normal', [Controller::class, 'normalize']);
 Route::get('/get-test', [Controller::class, 'get_test']);
+Route::get('/insert-data', [Controller::class, 'insert_data']);

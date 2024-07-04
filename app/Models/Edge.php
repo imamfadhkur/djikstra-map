@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dataset extends Model
+class Edge extends Model
 {
     use HasFactory;
-
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'id_node_a',
+        'id_node_b',
+        'distance',
+    ];
 }
