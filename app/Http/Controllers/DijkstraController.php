@@ -17,14 +17,12 @@ class DijkstraController extends Controller
 
         // Koordinat input dari request atau contoh data koordinat
         $coordinates = [
-            ['lat' => -7.32076430, 'lng' => 112.79239950],
-            ['lat' => -7.32076430, 'lng' => 112.79239950],
-            ['lat' => -7.32447190, 'lng' => 112.79396570],
-            ['lat' => -7.32057080, 'lng' => 112.79439410],
-            ['lat' => -7.32105860, 'lng' => 112.79408210],
-            ['lat' => -7.32213560, 'lng' => 112.79318970],
-            ['lat' => -7.32213560, 'lng' => 112.79318970],
-        ];
+            ['lat' => -7.030915, 'lng' => 112.752922],
+            ['lat' => -7.026203, 'lng' => 112.757749],
+            ['lat' => -7.025558, 'lng' => 112.760351],
+            ['lat' => -7.024485, 'lng' => 112.761464],
+            ['lat' => -7.020831, 'lng' => 112.761066],
+            ];
 
         $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit(11)->get();
             $coordinates = [];
@@ -60,7 +58,7 @@ class DijkstraController extends Controller
         }, $shortestRoute);
 
         // Kirim hasil ke view
-        return view('riset.dijkstra', ['coordinates' => $routeCoordinates]);
+        return view('riset.path', ['coordinates' => $routeCoordinates]);
     }
 
     private function calculateDistance($coord1, $coord2)

@@ -22,7 +22,7 @@
         var longitude = {{ $longitude }};
     
         // Buat peta dengan peta awal
-        var map = L.map('map').setView([latitude, longitude], 12); // Atur level zoom sesuai kebutuhan
+        var map = L.map('map').setView([latitude, longitude], 18); // Atur level zoom sesuai kebutuhan
     
         // Tambahkan tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

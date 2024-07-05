@@ -16,6 +16,44 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+    public function login_action(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect('/dashboard');
+        }
+        $request->session()->flash('loginError', 'Login gagal, username atau password salah!');
+        return redirect('/login');
+    }
+
+    public function logout_action(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('index');
+    }
+
+    public function dashboard()
+    {
+        $role = Auth::user()->role;
+        if ($role == 'admin') {            
+            return view('dashboard.admin.index', [
+                'title'=> 'admin dashboard',
+            ]);
+        }
+        elseif ($role == 'kurir') {
+            return view('dashboard.kurir.index', [
+                'title'=> 'kurir dashboard',
+            ]);
+        }
+        else {
+            return redirect()->route('not-found');
+        }
+    }
+
     public function lat_n_long(Request $request)
     {
         return view('try.lat_n_long', [
@@ -331,9 +369,15 @@ class Controller extends BaseController
             "Rungkut lor Gg 7 masjid No.48. Dari Gapura Gg 7 masjid yang barat masuk,rumah sebelah kanan depan rumah/kos tingkat ",
             "Rungkut lor gang 7 no 36 RT 001 RW 014",
             "Rungkut lor gang 7 Mulya  a no 1 belakang musholla an nur pas  Surabaya, Rungkut lor gang 7 Mulya a no 1 belakang musholla an nur pas",
-            "Jl. Rungkut Lor VII No.39 a (belakang warung) ",
-            "Jl. Rungkut Lor Gg. V No.31 ",
-            "Jl. Rungkut Lor VII Mulya No.22  gang depan tower",
+            "Jl. Rungkut Lor VII No.                        $koordinat_b = Edge::where(function ($query) use ($koordinat_a, $koordinat_b) {
+                            $query->where(function ($q) use ($koordinat_a, $koordinat_b) {
+                                $q->where('id_node_a', $koordinat_a)
+                                  ->where('id_node_b', $koordinat_b);
+                            })->orWhere(function ($q) use ($koordinat_a, $koordinat_b) {
+                                $q->where('id_node_b', $koordinat_b)
+                                  ->where('id_node_a', $koordinat_a);
+                            });
+                        })->first()->distance;r",
             "Rungkut Lor gang 7 mulia no 20 kec rungkut sby jatim Wa",
             "Rungkut lor gang 3 no.106,  warung miser mercon deket tower",
             "Rungkut lor gang 3 no.106,  warung miser mercon deket tower",
@@ -1820,41 +1864,214 @@ class Controller extends BaseController
 
     }
 
-    public function login_action(Request $request)
+    // antar data distance masing-masing koordinat dari table edges
+    public function uji_coba()
     {
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required'
+        $coordinates = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit(10)->get();
+        $data = [];
+        foreach ($coordinates as $key => $value) {
+            $data[] = [
+                'lat' => $value->latitude,
+                'lng' => $value->longitude,
+            ];
+        }
+    $data = [
+        [
+            "lat" => "-7.31211370",
+            "lng" => "112.70387780"
+        ],
+            [
+            "lat" => "-7.32076430",
+            "lng" => "112.79239950"
+        ],
+            [
+            "lat" => "-7.32076430",
+            "lng" => "112.79239950"
+        ],
+            [
+            "lat" => "-7.32246870",
+            "lng" => "112.79272920"
+        ],
+            [
+            "lat" => "-7.32213560",
+            "lng" => "112.79318970"
+        ],
+            [
+            "lat" => "-7.32213560",
+            "lng" => "112.79318970"
+        ],
+            [
+            "lat" => "-7.32430030",
+            "lng" => "112.79367670"
+        ],
+            [
+            "lat" => "-7.32105860",
+            "lng" => "112.79408210"
+        ],
+            [
+            "lat" => "-7.32057080",
+            "lng" => "112.79439410"
+        ],
+            [
+            "lat" => "-7.32447190",
+            "lng" => "112.79396570"
+        ]
+    ];
+    //     $data = 
+    //     [
+    //     [
+    //       "lat" => "-7.31211370",
+    //       "lng" => "112.70387780"
+    //     ],
+    //     [
+    //       "lat" => "-7.33050460",
+    //       "lng" => "112.75174540"
+    //     ],
+    //     [
+    //       "lat" => "-7.33053130",
+    //       "lng" => "112.75713720"
+    //     ],
+    //     [
+    //       "lat" => "-7.33048470",
+    //       "lng" => "112.75828710"
+    //     ],
+    //     [
+    //       "lat" => "-7.33501770",
+    //       "lng" => "112.75721040"
+    //     ],
+    //     [
+    //       "lat" => "-7.32712690",
+    //       "lng" => "112.76416320"
+    //     ],
+    //     [
+    //       "lat" => "-7.33596750",
+    //       "lng" => "112.76159340"
+    //     ],
+    //     [
+    //       "lat" => "-7.32969400",
+    //       "lng" => "112.76866500"
+    //     ],
+    //     [
+    //       "lat" => "-7.33106480",
+    //       "lng" => "112.78915540"
+    //     ],
+    //     [
+    //       "lat" => "-7.33034580",
+    //       "lng" => "112.78981160"
+    //     ],
+    //     [
+    //       "lat" => "-7.33019660",
+    //       "lng" => "112.79003020"
+    //     ],
+    //     [
+    //       "lat" => "-7.32973610",
+    //       "lng" => "112.79088490"
+    //     ],
+    //     [
+    //       "lat" => "-7.32973610",
+    //       "lng" => "112.79088490"
+    //     ],
+    //     [
+    //       "lat" => "-7.32076430",
+    //       "lng" => "112.79239950"
+    //     ],
+    //     [
+    //       "lat" => "-7.32076430",
+    //       "lng" => "112.79239950"
+    //     ],
+    //     [
+    //       "lat" => "-7.32366720",
+    //       "lng" => "112.79250350"
+    //     ],
+    //     [
+    //       "lat" => "-7.32246870",
+    //       "lng" => "112.79272920"
+    //     ],
+    //     [
+    //       "lat" => "-7.32213560",
+    //       "lng" => "112.79318970"
+    //     ],
+    //     [
+    //       "lat" => "-7.32213560",
+    //       "lng" => "112.79318970"
+    //     ],
+    //     [
+    //       "lat" => "-7.32400420",
+    //       "lng" => "112.79351570"
+    //     ],
+    //     [
+    //       "lat" => "-7.32430030",
+    //       "lng" => "112.79367670"
+    //     ],
+    //     [
+    //       "lat" => "-7.32105860",
+    //       "lng" => "112.79408210"
+    //     ],
+    //     [
+    //       "lat" => "-7.32433620",
+    //       "lng" => "112.79384870"
+    //     ],
+    //     [
+    //       "lat" => "-7.32057080",
+    //       "lng" => "112.79439410"
+    //     ],
+    //     [
+    //       "lat" => "-7.32447190",
+    //       "lng" => "112.79396570"
+    //     ],
+    //     [
+    //       "lat" => "-7.32478810",
+    //       "lng" => "112.79413030"
+    //     ],
+    //     [
+    //       "lat" => "-7.32323980",
+    //       "lng" => "112.79438840"
+    //     ],
+    //     [
+    //       "lat" => "-7.32341700",
+    //       "lng" => "112.79444370"
+    //     ],
+    //     [
+    //       "lat" => "-7.32341700",
+    //       "lng" => "112.79444370"
+    //     ],
+    //     [
+    //       "lat" => "-7.32491670",
+    //       "lng" => "112.79483400"
+    //     ]
+    // ];
+        $data_uji_coba = [];
+        $total_distance = 0;
+        for ($i=0; $i < count($data); $i++) { 
+            $temp = [];
+            $koordinat_a = Dataset::where('latitude', $data[$i]['lat'])->where('longitude', $data[$i]['lng'])->first()->id;
+            $hitung = true;
+            for ($j=0; $j < count($data); $j++) { 
+                $koordinat_b = Dataset::where('latitude', $data[$j]['lat'])->where('longitude', $data[$j]['lng'])->first()->id;
+                if ($koordinat_a == $koordinat_b) {
+                    $temp[$koordinat_b] = 0;
+                }
+                else {
+                    $temp[$koordinat_b] = number_format(Edge::where(function ($query) use ($koordinat_a, $koordinat_b) {
+                            $query->where(function ($q) use ($koordinat_a, $koordinat_b) {
+                                $q->where('id_node_a', $koordinat_a)->where('id_node_b', $koordinat_b);
+                            })->orWhere(function ($q) use ($koordinat_a, $koordinat_b) {
+                                $q->where('id_node_b', $koordinat_a)->where('id_node_a', $koordinat_b);
+                            });
+                        })->first()->distance, 2, '.', '');
+                }
+            }
+            if ($hitung == true)
+            {
+                // echo $temp[$koordinat_b]."<br>";
+                $total_distance += $temp[$koordinat_b];
+                $hitung = false;
+            }
+            $data_uji_coba[$koordinat_a] = $temp;
+        }
+        // dd($total_distance);
+        return view('riset.uji_coba', [
+            'data' => $data_uji_coba
         ]);
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect('/dashboard');
-        }
-        $request->session()->flash('loginError', 'Login gagal, username atau password salah!');
-        return redirect('/login');
-    }
-
-    public function logout_action(Request $request)
-    {
-        Auth::logout();
-        return redirect()->route('index');
-    }
-
-    public function dashboard()
-    {
-        $role = Auth::user()->role;
-        if ($role == 'admin') {            
-            return view('dashboard.admin.index', [
-                'title'=> 'admin dashboard',
-            ]);
-        }
-        elseif ($role == 'kurir') {
-            return view('dashboard.kurir.index', [
-                'title'=> 'kurir dashboard',
-            ]);
-        }
-        else {
-            return redirect()->route('not-found');
-        }
     }
 }

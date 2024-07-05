@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Edge;
 use App\Models\Dataset;
 use Illuminate\Http\Request;
 
@@ -25,7 +26,7 @@ class DijkstraV3Controller extends Controller
 
     public function shortestPath()
     {
-        $limit = 101;
+        $limit = 10;
         $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
         $coordinates = [];
         foreach ($data as $key => $value) {
@@ -94,7 +95,23 @@ class DijkstraV3Controller extends Controller
             'totalNode' => $limit,
         ];
 
-        dd($hasil, $distances);
+        $diss = 0;
+        $dissArr = [];
+        // dd($hasil, $distances);
+        for ($i=0; $i < count($output)-1; $i++) { 
+            $koordinat_a = Dataset::where('latitude', $output[$i]['lat'])->where('longitude', $output[$i]['lng'])->first()->id;
+            $koordinat_b = Dataset::where('latitude', $output[$i+1]['lat'])->where('longitude', $output[$i+1]['lng'])->first()->id;
+            $diss += Edge::where(function ($query) use ($koordinat_a, $koordinat_b) {
+                $query->where(function ($q) use ($koordinat_a, $koordinat_b) {
+                    $q->where('id_node_a', $koordinat_a)->where('id_node_b', $koordinat_b);
+                })->orWhere(function ($q) use ($koordinat_a, $koordinat_b) {
+                    $q->where('id_node_b', $koordinat_a)->where('id_node_a', $koordinat_b);
+                });
+            })->first()->distance;
+            $dissArr[] = $diss;
+        }
+
+        dd($output, $diss, $dissArr);
 
         return view('riset.dijkstra', [
             'coordinates' => $output,

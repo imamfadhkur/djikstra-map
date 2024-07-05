@@ -10,6 +10,9 @@
         #map {
             height: 600px;
         }
+        .leaflet-routing-container.leaflet-control {
+            display: none; /* Ini akan menyembunyikan seluruh container instruksi rute */
+        }
     </style>
 </head>
 <body>
@@ -18,6 +21,7 @@
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script>
         var map = L.map('map').setView([{{ $coordinates[0]['lat'] }}, {{ $coordinates[0]['lng'] }}], 15);
+        // document.getElementById('route-instructions').style.display = 'none';
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19
         }).addTo(map);

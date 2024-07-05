@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DijkstraController;
 use App\Http\Controllers\DijkstraV2Controller;
 use App\Http\Controllers\DijkstraV3Controller;
+use App\Http\Controllers\DijkstraV4Controller;
+use App\Http\Controllers\DijkstraV5Controller;
 use App\Http\Controllers\NonDijkstraController;
 
 Route::get('/', function () {
@@ -71,3 +73,4 @@ Route::get('/login', function () {
 })->middleware('guest')->name('login');
 Route::post('/login', [Controller::class, 'login_action'])->middleware('guest');
 Route::get('/logout', [Controller::class, 'logout_action'])->middleware('auth');
+Route::get('/uji-coba', [Controller::class, 'uji_coba']);

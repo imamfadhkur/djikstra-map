@@ -56,7 +56,7 @@ class NonDijkstraController extends Controller
 
         // buatkan array koordinat dari tabel datasets
         $hasil = [];
-        $limit = 101;
+        $limit = 11;
         $totalDistance = 0;
         $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
         $jumlah_node = count($data);
@@ -67,10 +67,14 @@ class NonDijkstraController extends Controller
                 'lng' => $value->longitude,
             ];
         }
-        // dd($coordinates);
-        // $coordinates[1] = [
-        //     'lat' => "-7.33050460",
-        //     'lng' => "112.75174540",
+        // $coordinates = [
+        //     ['lat' => -7.030915, 'lng' => 112.752922],
+        //     ['lat' => -7.031105, 'lng' => 112.745559],
+        //     ['lat' => -7.025105, 'lng' => 112.749559],
+        //     ['lat' => -7.026203, 'lng' => 112.757749],
+        //     ['lat' => -7.025558, 'lng' => 112.760351],
+        //     ['lat' => -7.024485, 'lng' => 112.761464],
+        //     ['lat' => -7.020831, 'lng' => 112.761066],
         // ];
         
         $numNodes = count($coordinates);
@@ -103,8 +107,8 @@ class NonDijkstraController extends Controller
         ];
         $hasil[] = $output;
 
-        dd($hasil, $totalDistance);
-        return view('riset.path', [
+        dd($hasil);
+        return view('riset.dijkstra', [
             'coordinates' => $coordinates,
             'totalDistance' => $totalDistance,
         ]);
