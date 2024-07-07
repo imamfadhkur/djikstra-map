@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\SecondController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DijkstraController;
@@ -74,3 +75,8 @@ Route::get('/login', function () {
 Route::post('/login', [Controller::class, 'login_action'])->middleware('guest');
 Route::get('/logout', [Controller::class, 'logout_action'])->middleware('auth');
 Route::get('/uji-coba', [Controller::class, 'uji_coba']);
+
+Route::get('alamat-penerima', [SecondController::class, 'alamat_penerima']);
+Route::get('alamat-pengiriman/path', [SecondController::class, 'rute_path']);
+Route::get('alamat-pengiriman/dijkstra', [DijkstraV3Controller::class, 'ShortestPath']);
+Route::get('alamat-kurir', [SecondController::class, 'kurirs']);

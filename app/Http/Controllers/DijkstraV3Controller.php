@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Edge;
 use App\Models\Dataset;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DijkstraV3Controller extends Controller
 {
@@ -26,9 +27,21 @@ class DijkstraV3Controller extends Controller
 
     public function shortestPath()
     {
-        $limit = 30;
-        $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
+        if (isset(Auth::user()->role) && Auth::user()->role == "kurir") {
+            $first = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->first();
+            $data = Dataset::where('kurir_id', Auth::id())->where('latitude', '!=', 0)->where('longitude', '!=', 0)->get();
+        }
+        else
+        {
+            $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit(10)->get();
+        }
         $coordinates = [];
+        if (isset($first)) {
+            $coordinates[] = [
+                'lat' => $first->latitude,
+                'lng' => $first->longitude,
+            ];
+        }
         foreach ($data as $key => $value) {
             $coordinates[] = [
                 'lat' => $value->latitude,
@@ -92,7 +105,6 @@ class DijkstraV3Controller extends Controller
         $hasil = [
             'coordinates' => $output,
             'totalDistance' => $totalDistanceToEndNode,
-            'totalNode' => $limit,
         ];
 
         $diss = 0;

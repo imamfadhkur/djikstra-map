@@ -11,7 +11,7 @@
                     <a href="/dashboard">Dashboard</a>
                 </li>
                 <li class="{{ Request::is('kurir*') ? 'active' : '' }}">
-                    <a href="/kurir">Kurir</a>
+                    <a href="/alamat-kurir">Kurir</a>
                 </li>
                 <li class="{{ Request::is('alamat-penerima*') ? 'active' : '' }}">
                     <a href="/alamat-penerima">Alamat Penerima</a>
@@ -24,7 +24,15 @@
                     <a href="/dashboard">Dashboard</a>
                 </li>
                 <li class="{{ Request::is('alamat-pengiriman*') ? 'active' : '' }}">
-                    <a href="/alamat-pengiriman">Alamat Pengiriman</a>
+                    <a href="#alamat-pengiriman" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">Alamat Pengiriman</a>
+                    <ul class="collapse list-unstyled {{ Request::is('alamat-pengiriman*') ? 'show' : '' }}" id="alamat-pengiriman">
+                        <li class="{{ Request::is('*alamat-pengiriman/path') ? 'active' : '' }}">
+                            <a href="{{ url('alamat-pengiriman/path') }}">Path</a>
+                        </li>
+                        <li class="{{ Request::is('*alamat-pengiriman/dijkstra') ? 'active' : '' }}">
+                            <a href="{{ url('alamat-pengiriman/dijkstra') }}">Dijkstra</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         @endcan

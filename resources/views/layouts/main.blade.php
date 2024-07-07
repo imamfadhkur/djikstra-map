@@ -30,6 +30,14 @@
         box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* Aturan tambahan saat di hover */
       }
     </style>
+
+    @if (Request::is('alamat-pengiriman/path'))
+    <style>
+      #map {
+          height: 600px;
+      }
+    </style>
+    @endif
   </head>
   <body class="d-flex flex-column" style="height: fit-content">
 

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
     <style>
         #map {
-            height: 600px;
+            height: 900px;
         }
         .leaflet-routing-container.leaflet-control {
             display: none; /* Ini akan menyembunyikan seluruh container instruksi rute */
