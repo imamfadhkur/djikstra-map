@@ -10,7 +10,7 @@
     <div class="container my-4">
       <div class="row">
         <div class="col">
-          <a href="{{ url('tambah-alamat-penerima') }}" class="btn btn-primary">tambah data</a>
+          <a href="#" class="btn btn-primary">tambah data</a>
         </div>
       </div>
       <div class="row">

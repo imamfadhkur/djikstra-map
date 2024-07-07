@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Edge;
 use App\Models\Dataset;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DijkstraV3Controller extends Controller
@@ -13,13 +12,19 @@ class DijkstraV3Controller extends Controller
     {
         $earthRadius = 6371; // Radius bumi dalam kilometer
 
+        // Menghitung perbedaan lintang (latitude) antara dua titik dalam radian
         $dLat = deg2rad($lat2 - $lat1);
+
+        // Menghitung perbedaan bujur (longitude) antara dua titik dalam radian
         $dLng = deg2rad($lng2 - $lng1);
 
+        // Menghitung kuadrat dari setengah chord panjang lintang
         $a = sin($dLat / 2) * sin($dLat / 2) +
+            // Mengalikan cosinus dari lintang titik pertama dan kedua, dan menghitung kuadrat dari setengah chord panjang bujur
             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
             sin($dLng / 2) * sin($dLng / 2);
 
+        // Menghitung jarak angular dalam radian menggunakan dua kali arctangent dari akar a dan akar dari (1 - a)
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
         return $earthRadius * $c;

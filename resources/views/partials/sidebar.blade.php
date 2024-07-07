@@ -11,7 +11,7 @@
                     <a href="/dashboard">Dashboard</a>
                 </li>
                 <li class="{{ Request::is('kurir*') ? 'active' : '' }}">
-                    <a href="/alamat-kurir">Kurir</a>
+                    <a href="#">Kurir</a>
                 </li>
                 <li class="{{ Request::is('alamat-penerima*') ? 'active' : '' }}">
                     <a href="/alamat-penerima">Alamat Penerima</a>

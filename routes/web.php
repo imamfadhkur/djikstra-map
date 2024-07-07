@@ -2,13 +2,8 @@
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\SecondController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DijkstraController;
-use App\Http\Controllers\DijkstraV2Controller;
 use App\Http\Controllers\DijkstraV3Controller;
-use App\Http\Controllers\DijkstraV4Controller;
-use App\Http\Controllers\DijkstraV5Controller;
 use App\Http\Controllers\NonDijkstraController;
 
 Route::get('/', function () {
@@ -16,6 +11,7 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
+// ketika user mengakses URL "map-1-point" maka akan diarahkan ke views map_1_point yang terdapat pada folder views/example
 Route::get('/map-1-point', function () {
     return view('example.map_1_point');
 });
@@ -36,6 +32,7 @@ Route::get('/test', function () {
     return view('test');
 });
 
+// ketika user mengakses URL "lat_n_long" maka akan diarahkan ke file Controller yang ada di folder app/Http/Controllers, lalu diarahkan ke fungsi lat_n_long
 Route::get('/lat_n_long', [Controller::class, 'lat_n_long']);
 Route::get('/one_address', [Controller::class, 'one_address']);
 Route::get('/two_address', [Controller::class, 'two_address']);
@@ -49,7 +46,6 @@ Route::get('/dijkstra', [DijkstraV3Controller::class, 'ShortestPath']);
 
 Route::get('/normal', [Controller::class, 'normalize']);
 Route::get('/get-test', [Controller::class, 'get_test']);
-Route::get('/insert-data', [Controller::class, 'insert_data']);
 
 Route::get('/not-found', function () {
     abort(404);
@@ -69,7 +65,7 @@ Route::get('dashboard', [Controller::class, 'dashboard'])->name('dashboard')->mi
 
 Route::get('/login', function () {
     return view('auth.login', [
-        'title' => 'login',
+        'title' => 'login', // website membawa data title untuk diolah di dalam views login
     ]);
 })->middleware('guest')->name('login');
 Route::post('/login', [Controller::class, 'login_action'])->middleware('guest');

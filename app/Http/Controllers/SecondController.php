@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Dataset;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SecondController extends Controller
@@ -12,7 +10,6 @@ class SecondController extends Controller
     public function alamat_penerima()
     {
         $data = Dataset::where("kurir_id", "!=", 0)->paginate(25);
-        // dd($data[0]->user);
         return view('dashboard.admin.alamat_penerima.index', [
             'alamat_penerimas' => $data,
             'title' => 'Alamat Penerima'
@@ -23,13 +20,19 @@ class SecondController extends Controller
     {
         $earthRadius = 6371; // Radius bumi dalam kilometer
 
+        // Menghitung perbedaan lintang (latitude) antara dua titik dalam radian
         $dLat = deg2rad($lat2 - $lat1);
+
+        // Menghitung perbedaan bujur (longitude) antara dua titik dalam radian
         $dLng = deg2rad($lng2 - $lng1);
 
+        // Menghitung kuadrat dari setengah chord panjang lintang
         $a = sin($dLat / 2) * sin($dLat / 2) +
-             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-             sin($dLng / 2) * sin($dLng / 2);
+            // Mengalikan cosinus dari lintang titik pertama dan kedua, dan menghitung kuadrat dari setengah chord panjang bujur
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLng / 2) * sin($dLng / 2);
 
+        // Menghitung jarak angular dalam radian menggunakan dua kali arctangent dari akar a dan akar dari (1 - a)
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
         return $earthRadius * $c;
@@ -37,10 +40,8 @@ class SecondController extends Controller
     
     public function rute_path()
     {
-        $totalDistance = 0;
         $data = Dataset::where('kurir_id', Auth::id())->where('latitude', '!=', 0)->where('longitude', '!=', 0)->get();
         $first = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->first();
-        $jumlah_node = count($data);
         $coordinates = [];
         $coordinates[] = [
             'lat' => $first->latitude,
@@ -52,40 +53,9 @@ class SecondController extends Controller
                 'lng' => $value->longitude,
             ];
         }
-        $numNodes = count($coordinates);
 
-        // Hitung jarak total dengan mengunjungi setiap titik dalam urutan yang diberikan
-        for ($i = 0; $i < $numNodes - 1; $i++) {
-            $distance = $this->haversine(
-                $coordinates[$i]['lat'], $coordinates[$i]['lng'],
-                $coordinates[$i + 1]['lat'], $coordinates[$i + 1]['lng']
-            );
-            $totalDistance += $distance;
-            // dd($coordinates[0],$coordinates[1], $totalDistance);
-            // Tambahkan totalDistance ke array saat ini sebagai 'totalDistance'
-            $coordinates[$i]['totalDistance'] = $totalDistance;
-        }
-
-        // Tambahkan jarak dari titik terakhir ke titik pertama untuk membentuk siklus
-        $distance = $this->haversine(
-            $coordinates[$numNodes - 1]['lat'], $coordinates[$numNodes - 1]['lng'],
-            $coordinates[0]['lat'], $coordinates[0]['lng']
-        );
-        $totalDistance += $distance;
-        // Pastikan untuk menambahkan totalDistance ke elemen terakhir juga
-        $coordinates[$numNodes - 1]['totalDistance'] = $totalDistance;
-
-        $output = [
-            'coordinates' => $coordinates,
-            'totalDistance' => $totalDistance,
-            'totalNode' => $jumlah_node,
-        ];
-        $hasil[] = $output;
-
-        // dd($hasil);
         return view('riset.path', [
             'coordinates' => $coordinates,
-            'totalDistance' => $totalDistance,
         ]);
     }
     
