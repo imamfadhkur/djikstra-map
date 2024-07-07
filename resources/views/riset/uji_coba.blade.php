@@ -62,7 +62,31 @@
             </tr>
         @endforeach
     </table>
-    <table>
+    <br>
+    @php
+        $j = 0;
+        $data3 = $data;
+        sort($data3);
+        // print_r("<pre>");
+        // print_r($data3);
+        // print_r("</pre>");
+        $sor = [];
+    @endphp
+    @foreach ($data3[0] as $key => $value)
+        {{ $j." => ".$key }} <br>
+        @php
+        $sor[$j] = $key;
+            $j++;
+        @endphp
+    @endforeach
+    @php
+        print_r("<pre>");
+        sort($sor);
+        print_r($sor);
+        print_r("</pre>");
+    @endphp
+    <br>
+    {{-- <table>
         <tr>
             <td>
                 @php
@@ -91,8 +115,8 @@
                 @endphp
             </td>
         </tr>
-    </table>
-    <table>
+    </table> --}}
+    {{-- <table>
         <tr>
             <th colspan="{{ count($data)+1 }}">Data Shortest Path dalam Kilometer</th>
         </tr>
@@ -103,7 +127,7 @@
                 $key = [];
             @endphp
             @foreach ($data as $i => $array)
-                <th>{{ $i }}</th>
+                <th>{{ $x }}</th>
                 @php
                     $x++;
                     $key[] = $i;
@@ -115,7 +139,7 @@
         @endphp
         @foreach ($data as $i => $array)
             <tr>
-                <th style="padding-right: 5px; padding-left: 5px">{{ $i }}</th>
+                <th style="padding-right: 5px; padding-left: 5px">{{ $y }}</th>
                 @php
                     $y++;
                 @endphp
@@ -136,13 +160,32 @@
                 @endforeach
             </tr>
         @endforeach
+    </table> --}}
+    <br>
+    <table>
+        <tr>
+            <td>No.</td>
+            <td>Alamat</td>
+            <td>Kode</td>
+            <td>Latitude</td>
+            <td>Longitude</td>
+        </tr>
+        @foreach ($alamats as $key => $item)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ "Alamat ".$loop->iteration }}</td>
+                <td>{{ ($loop->iteration)-1 }}</td>
+                <td>{{ $item["lat"] }}</td>
+                <td>{{ $item["lng"] }}</td>
+            </tr>
+        @endforeach
     </table>
     <p>
-        @php
+        {{-- @php
             print_r("<pre>");
             print_r($data2);
             print_r("</pre>");
-        @endphp
+        @endphp --}}
     </p>
     <p>Total nilai dengan background rgb(55, 255, 55): <span id="totalValue"></span></p>
 

@@ -26,7 +26,7 @@ class DijkstraV3Controller extends Controller
 
     public function shortestPath()
     {
-        $limit = 10;
+        $limit = 30;
         $data = Dataset::where('latitude', '!=', 0)->where('longitude', '!=', 0)->limit($limit)->get();
         $coordinates = [];
         foreach ($data as $key => $value) {
@@ -111,9 +111,9 @@ class DijkstraV3Controller extends Controller
             $dissArr[] = $diss;
         }
 
-        dd($output, $diss, $dissArr);
+        // dd($output, $diss, $dissArr);
 
-        return view('riset.dijkstra', [
+        return view('riset.path', [
             'coordinates' => $output,
             'totalDistance' => $totalDistanceToEndNode
         ]);
